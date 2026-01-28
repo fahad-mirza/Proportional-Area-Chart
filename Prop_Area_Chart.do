@@ -1,6 +1,6 @@
 	* Author: Fahad Mirza
 	* Date Created: Jan 9, 2026
-	* Last Modified: Jan 23, 2026
+	* Last Modified: Jan 28, 2026
 	
 	* Notes: The code makes use of "graphfunctions" by Asjad Naqvi
 		* Install the package once:
@@ -35,14 +35,18 @@
 	
 	generate title = "Sample Text" in 1
 	
-********************************************************************************
+	
+	**************************************************
+	**************************************************
+	**************************************************
+	
 	
 	* All settings for the plot
 		
 	* Choose on how many spokes you required for categories
 	* The dummy data will be generated based on the number of sides needed
 	* This is the main local for the plot
-	local nsides 	12
+	local nsides 	7
 	
 		
 	* This setting brings category 1 or A to the top.
@@ -76,64 +80,89 @@
 	
 	local titletext "`=title[1]'"
 	
-	* Color for center text
-	local titlecolor "100 100 100"
 	
-	* Size of the center text
-	local titlesize 1.5
+
 	
 	* Position of the circles on the spoke (This is a multiplier value)
 	local circpos 0.85
-	
-	* Circle 1 color
-	local oddcirccol "224 106 75"
-	
-	* Circle 2 color
-	local evencirccol "98 180 197"
 	
 	* Size of spokes on which the circles will be generated
 	local spokeradius 	8
 	
 	* Width of the spokes
-	local spokewidth 0.1
-	
-	* Spoke line color
-	local spokelcolor "200 200 200"
+	local spokewidth 0.2
 	
 	* Size of the solid shape at the center of the visual (Radius size)
-	local shaperadius 	4
-	
-	* Color of the center shape
-	local shapecolor "220 220 220"
-	
-	* Opacity of the center shape color
-	local shapeopacity 100
-	
-	* Category Label offset for all labels being shown on the outside of the spoke
-	local offset 		1.07
-	
-	* Category color on the spokes
-	local catcolor 	"200 200 200"
-	
-	* Setting to rotate the Category label
-	* If the value is 0 then the category label will follow the angle of the spoke
-	* If the value is 1 then the category label will keep the category text horizontal
-	local catlabelrot 	1
+	local shaperadius 	3
 	
 	* Line width for the circles being created on the spoke (Multiplier)
-	local circlwidth 	1.5
+	local circlwidth 	1.25
 	
-	* How far above the circle would you like to display the maximum value (This is an addition)
-	local maxlaboffset 	0.4
 	
-	* Text size for the label being displayed on the maxima of each circle
-	local maxlabsize 	0.65
+	* Label Sizes and Category Label Rotation
 	
-	* For Max valye labels on 90 and 270 degrees, how far away should they be positioned from the circle
-	* This is a multiplier
-	local maxlabgapvert 0.25
+		* Size of the center text
+		local titlesize 1.5	
+		
+		* Text size for the label being displayed on the maxima of each circle
+		local maxlabsize 	0.65
+		
+		* Category label size
+		local catlabsize 1
+		
+		* Setting to rotate the Category label
+		* If the value is 0 then the category label will follow the angle of the spoke
+		* If the value is 1 then the category label will keep the category text horizontal
+		local catlabelrot 	1		
+	
+	
+	* Offsets
+	
+		* Category Label offset for all labels being shown on the outside of the spoke
+		local offset 		1.15
+		
+		* How far above the circle would you like to display the maximum value (This is an addition)
+		local maxlaboffset 	0.4	
+		
+		* For Max value labels on 90 and 270 degrees, how far away should they be positioned from the circle
+		* This is a multiplier
+		local maxlabgapvert 0.2	
+	
+	
+	* Colors
+	
+		* Circle 1 color
+		local oddcirccol "224 106 75"
+		
+		* Circle 2 color
+		local evencirccol "98 180 197"
+		
+		* Spoke line color
+		local spokelcolor "200 200 200"
+		
+		* Color of the center shape
+		local shapecolor "220 220 220"
+		
+		* Color for center text
+		local titlecolor "100 100 100"
+		
+		* Category color on the spokes
+		local catcolor 	"175 175 175"
+		
+		
+	* Opacity of circle and center shape
+	
+		* Opacity of the center shape color
+		local shapeopacity 100	
+		
+		* Opacity of circles created on the spoke
+		local circlopacity 	100		
+	
 	
 	**************************************************
+	**************************************************
+	**************************************************
+	
 	
 	* Collect all original variable list
 	ds *
@@ -179,13 +208,13 @@
 		
 			if `=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))' == 180 {
 				
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1)) - 180') mlabpos(0)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1)) - 180') mlabpos(0) mlabsize(*`catlabsize')) "
 				
 			}
 			
 			else if `=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))' == 0 {
 				
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))') mlabpos(0)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))') mlabpos(0) mlabsize(*`catlabsize')) "
 				
 			}		
 			
@@ -194,7 +223,7 @@
 				* Subtracting the angle of each spoke from the label angle
 				local catangle = `=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1)) - (360/`nsides' * (`i' - 1))' 
 				
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(9) mlabgap(*-1.5)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(9) mlabgap(*-1.5) mlabsize(*`catlabsize')) "
 				
 			}
 			
@@ -203,7 +232,7 @@
 				* Subtracting the angle of each spoke from the label angle
 				local catangle = `=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1)) - (360/`nsides' * (`i' - 1))' 
 													
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(3) mlabgap(*-1.5)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(3) mlabgap(*-1.5) mlabsize(*`catlabsize')) "
 				
 			}		
 		
@@ -215,13 +244,13 @@
 		
 			if `=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))' == 180 {
 				
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1)) - 180') mlabpos(0)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1)) - 180') mlabpos(0) mlabsize(*`catlabsize')) "
 				
 			}
 			
 			else if `=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))' == 0 {
 				
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))') mlabpos(0)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))') mlabpos(0) mlabsize(*`catlabsize')) "
 				
 			}		
 			
@@ -230,7 +259,7 @@
 				* Subtracting the angle of each spoke from the label angle
 				local catangle = `=(360/`nsides' - 90 + `rotate0') + (90 - (360/`nsides'))' 
 				
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(9) mlabgap(*-1.5)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(9) mlabgap(*-1.5) mlabsize(*`catlabsize')) "
 				
 			}
 			
@@ -239,7 +268,7 @@
 				* Subtracting the angle of each spoke from the label angle
 				local catangle = `=(360/`nsides' - 90 + `rotate0') + (90 - (360/`nsides'))' 
 													
-				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(3) mlabgap(*-1.5)) "
+				local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(3) mlabgap(*-1.5) mlabsize(*`catlabsize')) "
 				
 			}		
 		
@@ -251,7 +280,7 @@
 			* Case where there is a category at 180 degrees regardless of any rotation
 			local catangle = `=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1)) - 180'
 			
-			local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(0)) "
+			local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`catangle') mlabpos(0) mlabsize(*`catlabsize')) "
 			
 			
 		}
@@ -259,7 +288,7 @@
 		else {
 			
 			* All other cases
-			local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))') mlabpos(0)) "
+			local scatterlabels "`scatterlabels' (scatteri `=y0[`i']' `=x0[`i']' `=_y120pct[`i']' `=_x120pct[`i']' "`=category[`i']'", ms(i) mlabcolor("`catcolor'") mlabangle(`=(360/`nsides' - 90 + `rotate0') + (360/`nsides' * (`i' - 1))') mlabpos(0) mlabsize(*`catlabsize')) "
 			
 			
 		}
@@ -297,8 +326,8 @@
 	* Generating lines to generate the circles (Starts from ID 3 as ID 1 and 2 create the spoke and center shape)
 	forvalues j = 3(2)`=(`nsides'*2) + 1' {
 		
-		local oddcirc "`oddcirc' (line _y _x if _id == `j', lwidth(*`circlwidth') lcolor("`oddcirccol'") lalign(inside)) "
-		local evencirc "`evencirc' (line _y _x if _id == `=`j' + 1', lwidth(*`circlwidth') lcolor("`evencirccol'") lalign(inside)) "
+		local oddcirc "`oddcirc' (line _y _x if _id == `j', lwidth(*`circlwidth') lcolor("`oddcirccol'%`circlopacity'") lalign(inside)) "
+		local evencirc "`evencirc' (line _y _x if _id == `=`j' + 1', lwidth(*`circlwidth') lcolor("`evencirccol'%`circlopacity'") lalign(inside)) "
 		
 	}
 	
@@ -426,4 +455,7 @@
 	* Drop intermediate variables
 	keep `keepvars'
 	quietly missings dropobs `keepvars', force
+	
+	
+	*graph export "./Prop_Area_Chart_12_Categories.png", as(png) width(3840) replace
 
